@@ -1,0 +1,17 @@
+{
+    "name": "atiqsu/wp-pave",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Atiqsu\\WpPave\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Md. Atiqur Rahman",
+            "email": "atiqur.su@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
