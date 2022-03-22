@@ -2,9 +2,18 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
-class ActivationHandler implements HandlerInterface {
+abstract class ActivationHandler implements HandlerInterface {
+
+	abstract public function install();
+
+	abstract public function defaultGlobalSettings();
+
+	abstract public function wpCronSchedule();
 
 	public function handle() {
 
+		$this->install();
+
+		do_action( 'WpPave/extend/on/after/activation' );
 	}
 }

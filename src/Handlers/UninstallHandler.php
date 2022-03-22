@@ -2,9 +2,20 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
-class UninstallHandler implements HandlerInterface {
+abstract class UninstallHandler implements HandlerInterface {
+
+	abstract public function uninstall();
+
+	abstract public function clearGlobalSettings();
+
+	abstract public function clearWpCronSchedules();
 
 	public function handle() {
-		
+
+		$this->uninstall();
+		$this->clearGlobalSettings();
+		$this->clearWpCronSchedules();
+
+		do_action( 'WpPave/extend/on/after/uninstallation' );
 	}
 }
