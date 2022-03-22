@@ -11,6 +11,10 @@ class Container implements ContainerInterface {
 
 	protected array $instance = [];
 
+	protected array $registry = [];
+
+	protected array $singletons = [];
+
 	private function makeKey(string $id): string {
 		return 'ci\\' . $id;
 	}
@@ -32,6 +36,18 @@ class Container implements ContainerInterface {
 		$key = $this->makeKey($id);
 
 		return isset($this->instance[$key]);
+	}
+
+	public function set(string $id, $val, $singleton = true) {
+		$key = $this->makeKey($id);
+
+		if($singleton === true) {
+			$this->singletons[$key] = true;
+		}
+
+		if ($val instanceof \Closure) {
+			throw new DependencyResolutionException('For the time being we are not allowing closure.');
+		}
 	}
 
 	public function buildObject(string $name) {
