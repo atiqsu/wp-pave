@@ -2,6 +2,11 @@
 
 namespace Atiqsu\WpPave\Container;
 
+/**
+ * A nice simple example is here
+ * - https://github.com/adreastrian/wp-fluent/blob/master/libs/viocon/src/Viocon/Container.php
+ *
+ */
 class Container implements ContainerInterface {
 
 	protected array $instance = [];
