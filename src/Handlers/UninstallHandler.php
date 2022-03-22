@@ -10,7 +10,7 @@ abstract class UninstallHandler implements HandlerInterface {
 
 	abstract public function clearWpCronSchedules();
 
-	public function handle() {
+	public function handle($network_wide = false) {
 
 		$this->uninstall();
 		$this->clearGlobalSettings();

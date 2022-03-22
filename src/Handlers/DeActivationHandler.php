@@ -12,7 +12,7 @@ abstract class DeActivationHandler implements HandlerInterface {
 		// do nothing here, if developer want to do something in their plugin let it be overridden
 	}
 
-	public function handle() {
+	public function handle($network_wide = false) {
 		$this->deactivate();
 
 		if($this->userConsentToClearData() === true) {
