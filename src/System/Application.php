@@ -33,6 +33,8 @@ class Application {
 		//$this->pluginFile     = $path;
 		//$this->basePath       = untrailingslashit(plugin_dir_path($path));
 		//$this->pluginBasename = plugin_basename($path);
+
+		$this->bootFrameworkProviders();
 	}
 
 	public static function getInstance($path = null): Application {
@@ -48,5 +50,20 @@ class Application {
 		$this->version = $version;
 
 		return $this;
+	}
+
+
+	private function bootFrameworkProviders() {
+		$conf = require_once __DIR__ . '/systemConf.php';
+
+		if(!empty($conf['before_boot_providers'])) {
+			foreach($conf['before_boot_providers'] as $item) {
+				$this->container->set($item, $item, true);
+			}
+		}
+	}
+
+	private function bootNoticeProvider() {
+		//$this->container->set();
 	}
 }

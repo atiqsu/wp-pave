@@ -15,6 +15,8 @@ class Container implements ContainerInterface {
 
 	protected array $singletons = [];
 
+	private array $debug = [];
+
 	private function makeKey(string $id): string {
 		return 'ci\\' . $id;
 	}
@@ -41,6 +43,10 @@ class Container implements ContainerInterface {
 	public function set(string $id, $val, $singleton = true) {
 		$key = $this->makeKey($id);
 
+		if(isset($this->registry[$key])) {
+			throw new DependencyResolutionException('Duplicate key. A service is already registered with the given key.');
+		}
+
 		if($singleton === true) {
 			$this->singletons[$key] = true;
 		}
@@ -48,10 +54,59 @@ class Container implements ContainerInterface {
 		if ($val instanceof \Closure) {
 			throw new DependencyResolutionException('For the time being we are not allowing closure.');
 		}
+
+		$primitive = [
+			'integer',
+			'double',
+			'NULL',
+			'null',
+			'object',
+		];
+
+		$typ = gettype($val);
+		$this->registry[$key] = $singleton;
+
+		if(in_array($typ, $primitive)) {
+			$this->instance[$key] = $val;
+
+			return;
+		}
+
+		if(class_exists($val)) {
+			$this->debug[] = 'class found: '. $val;
+			$this->buildObject($key, $val);
+		} else {
+			$this->debug[] = 'class not found: '. $val;
+		}
 	}
 
-	public function buildObject(string $name) {
-		$key = $this->makeKey($name);
+	/**
+	 * In this function we are hoping to get full qualified class name in string format
+	 *
+	 * @param string $key
+	 * @param $name
+	 * @return void
+	 */
+	private function buildObject(string $key, $name) {
+
+		/**
+		 * class_exists
+		 * get_class
+		 * class_alias
+		 * (new ReflectionClass($class))->name;
+		 * get_declared_classes
+		 * get_defined_functions
+		 * get_declared_interfaces
+		 * interface_exists
+		 * method_exists
+		 * is_callable
+		 * __invoke
+		 * __callStatic
+		 * trait_exists
+		 *
+		 *
+		 */
+
 		$className = $this->resolveAlias($name);
 
 		try {
@@ -85,5 +140,12 @@ class Container implements ContainerInterface {
 
 	private function resolveAlias(string $name): string {
 		return $name;
+	}
+
+	public function dumpDebugLog() {
+
+		echo '<pre>';
+		print_r($this->debug);
+		echo '</pre>';
 	}
 }
