@@ -40,7 +40,7 @@ class Container implements ContainerInterface {
 		return isset($this->instance[$key]);
 	}
 
-	public function set(string $id, $val, $singleton = true) {
+	public function set(string $id, $val, bool $singleton = true) {
 		$key = $this->makeKey($id);
 
 		if(isset($this->registry[$key])) {
@@ -120,7 +120,11 @@ class Container implements ContainerInterface {
 
 		$constructor = $reflection->getConstructor(); // $constructor === null ? new $key(): ''
 
-		if($constructor === null) {
+		/**
+		 * Do you know -
+		 * $var === null and $var === NULL is not same !!! wt.....
+		 */
+		if(is_null($constructor)) {
 			// There is no constructor, just return a new object.
 			$this->instance[$key] = new $className;
 		}

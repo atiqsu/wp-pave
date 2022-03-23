@@ -11,7 +11,7 @@ use Atiqsu\WpPave\Providers\AdminNoticeService;
  */
 class Application {
 
-	private static Application $instance;
+	private static ?Application $instance;
 
 	private array $providersInstance = [];
 
@@ -40,7 +40,7 @@ class Application {
 
 	public static function getInstance($path = null): Application {
 
-		if(null === self::$instance) {
+		if(is_null(self::$instance)) {
 			self::$instance = new self($path);
 		}
 
