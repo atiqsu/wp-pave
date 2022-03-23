@@ -11,7 +11,7 @@ use Atiqsu\WpPave\Providers\AdminNoticeService;
  */
 class Application {
 
-	private static ?Application $instance;
+	private static ?Application $instance = null;
 
 	private array $providersInstance = [];
 
@@ -52,7 +52,6 @@ class Application {
 
 		return $this;
 	}
-
 
 	private function bootFrameworkProviders() {
 		$conf = require_once __DIR__ . '/systemConf.php';

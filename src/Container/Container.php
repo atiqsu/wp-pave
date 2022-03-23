@@ -127,17 +127,21 @@ class Container implements ContainerInterface {
 		if(is_null($constructor)) {
 			// There is no constructor, just return a new object.
 			$this->instance[$key] = new $className;
+
+			return;
 		}
+
 		$params = $constructor->getParameters();
 
 		if(count($params) < 1) {
 			$this->instance[$key] = new $className;
 
-		} else {
-			throw new DependencyResolutionException(
-				sprintf('For the time being we are only allowing constructor with zero dependency, found : %d ".', count($params))
-			);
+			return;
 		}
+
+		throw new DependencyResolutionException(
+			sprintf('For the time being we are only allowing constructor with zero dependency, found : %d ".', count($params))
+		);
 
 		//foreach ($constructor->getParameters() as $param){}
 	}
