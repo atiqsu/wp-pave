@@ -3,6 +3,7 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
+use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**
  * What the f** this is ? - Well right now it's not DI container ......
@@ -63,7 +64,23 @@ class Application {
 		}
 	}
 
-	private function bootNoticeProvider() {
-		//$this->container->set();
+	/**
+	 * @param $name
+	 * @return mixed
+	 * @throws \Atiqsu\WpPave\Container\ContainerExceptionInterface
+	 * @throws \Atiqsu\WpPave\Container\NotFoundExceptionInterface
+	 */
+	public function get($name) {
+		return $this->container->get($name);
+	}
+
+	/**
+	 *
+	 * @return AdminNoticeService
+	 * @throws \Atiqsu\WpPave\Container\ContainerExceptionInterface
+	 * @throws \Atiqsu\WpPave\Container\NotFoundExceptionInterface
+	 */
+	public function getAdminNoticeService(): AdminNoticeService {
+		return $this->container->get(AdminNoticeService::class);
 	}
 }
