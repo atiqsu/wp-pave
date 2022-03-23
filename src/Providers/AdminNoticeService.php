@@ -10,14 +10,22 @@ class AdminNoticeService implements NotifyInterface {
 	private string $printing;
 	private bool $isDismissible = true;
 
-	public function new($textDomain, $uniqueId = null): AdminNoticeService {
+	private function getUniqueId(): string {
+		return 'wpPave_' . time();
+	}
 
-		$textDomain = empty($textDomain) ? 'wp-pave-default' : $textDomain;
-		$uniqueId   = $uniqueId ?? 'wpPave_' . time();
+	private function setUniqueId($val): AdminNoticeService {
 
-		$this->notice             = $uniqueId;
+		$this->notice = $uniqueId ?? $this->getUniqueId();
+
+		return $this;
+	}
+
+	public function new($uniqueId = null): AdminNoticeService {
+
+		$this->setUniqueId($uniqueId);
+
 		$this->notices[$uniqueId] = [
-			't' => $textDomain,
 			'm' => 'wp pave default message....no message set by developer',
 			'c' => ['wp-pave-notice notice'],
 			'd' => $this->isDismissible,
@@ -26,32 +34,39 @@ class AdminNoticeService implements NotifyInterface {
 		return $this;
 	}
 
-	public function errorNotice(): AdminNoticeService {
+	public function errorNotice($msg, $noticeId = null): AdminNoticeService {
 
-		$this->notices[$this->notice]['c'][] = 'notice-error';
-
-		return $this;
+		return $this->setUniqueId($noticeId)
+		     ->setNoticeType('error')
+		     ->message($msg);
 	}
 
-	public function infoNotice(): AdminNoticeService {
+	public function infoNotice($msg, $noticeId = null): AdminNoticeService {
 
-		$this->notices[$this->notice]['c'][] = 'notice-info';
-
-		return $this;
+		return $this->setUniqueId($noticeId)
+		->setNoticeType('info')
+		->message($msg);
 	}
 
-	public function successNotice(): AdminNoticeService {
+	public function successNotice($msg, $noticeId = null): AdminNoticeService {
 
-		$this->notices[$this->notice]['c'][] = 'notice-success';
-
-		return $this;
+		return $this->setUniqueId($noticeId)
+		     ->setNoticeType('success')
+		     ->message($msg);
 	}
 
-	public function defaultNotice(): AdminNoticeService {
+	public function warningNotice($msg, $noticeId = null): AdminNoticeService {
 
-		$this->notices[$this->notice]['c'][] = 'notice-default';
+		return $this->setUniqueId($noticeId)
+		     ->setNoticeType('warning')
+		     ->message($msg);
+	}
 
-		return $this;
+	public function defaultNotice($msg, $noticeId = null): AdminNoticeService {
+
+		return $this->setUniqueId($noticeId)
+		     ->setNoticeType('default')
+		     ->message($msg);
 	}
 
 	/**
@@ -64,7 +79,7 @@ class AdminNoticeService implements NotifyInterface {
 	 * @param $type
 	 * @return $this
 	 */
-	public function NoticeType(string $type = ''): AdminNoticeService {
+	public function setNoticeType(string $type): AdminNoticeService {
 
 		$this->notices[$this->notice]['c'][] = 'notice-' . $type;
 
