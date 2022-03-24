@@ -9,7 +9,6 @@ class AdminNoticeService implements NotifyInterface {
 	protected string $scriptVersion = '1.0.0';
 	protected string $notice;
 	protected array $notices = [];
-	private bool $isDismissible = true;
 	private static int $count = 0;
 
 	private function getUniqueId(): string {
@@ -19,7 +18,6 @@ class AdminNoticeService implements NotifyInterface {
 	private function setUniqueId($val): AdminNoticeService {
 		self::$count++;
 		$this->notice = $val ?? $this->getUniqueId();
-		$this->notices[$this->notice]['_id'] = $this->notice;
 
 		return $this;
 	}
@@ -30,7 +28,8 @@ class AdminNoticeService implements NotifyInterface {
 			->notices[$this->notice] = [
 			'm' => 'wp pave default message....no message set by developer',
 			'c' => ['wp-pave-notice notice'],
-			'd' => $this->isDismissible,
+			'd' => false,
+			'_id' => $this->notice,
 		];
 
 		return $this;
@@ -95,9 +94,9 @@ class AdminNoticeService implements NotifyInterface {
 		return $this;
 	}
 
-	public function dismissible(bool $make = true): AdminNoticeService {
+	public function setDismissible(bool $make = true): AdminNoticeService {
 
-		$this->isDismissible = $make;
+		$this->notices[$this->notice]['d'] = $make;
 
 		return $this;
 	}
