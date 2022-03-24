@@ -9,13 +9,14 @@ class AdminNoticeService implements NotifyInterface {
 	protected array $notices = [];
 	private string $printing;
 	private bool $isDismissible = true;
+	private static int $count = 0;
 
 	private function getUniqueId(): string {
-		return 'wpPave_' . time();
+		return 'wpPave_' . time() . '_' . self::$count;
 	}
 
 	private function setUniqueId($val): AdminNoticeService {
-
+		self::$count++;
 		$this->notice = $uniqueId ?? $this->getUniqueId();
 
 		return $this;
@@ -37,36 +38,36 @@ class AdminNoticeService implements NotifyInterface {
 	public function errorNotice($msg, $noticeId = null): AdminNoticeService {
 
 		return $this->new($noticeId)
-		     ->setNoticeType('error')
-		     ->message($msg);
+		            ->setNoticeType('error')
+		            ->message($msg);
 	}
 
 	public function infoNotice($msg, $noticeId = null): AdminNoticeService {
 
 		return $this->new($noticeId)
-		->setNoticeType('info')
-		->message($msg);
+		            ->setNoticeType('info')
+		            ->message($msg);
 	}
 
 	public function successNotice($msg, $noticeId = null): AdminNoticeService {
 
 		return $this->new($noticeId)
-		     ->setNoticeType('success')
-		     ->message($msg);
+		            ->setNoticeType('success')
+		            ->message($msg);
 	}
 
 	public function warningNotice($msg, $noticeId = null): AdminNoticeService {
 
 		return $this->new($noticeId)
-		     ->setNoticeType('warning')
-		     ->message($msg);
+		            ->setNoticeType('warning')
+		            ->message($msg);
 	}
 
 	public function defaultNotice($msg, $noticeId = null): AdminNoticeService {
 
 		return $this->new($noticeId)
-		     ->setNoticeType('default')
-		     ->message($msg);
+		            ->setNoticeType('default')
+		            ->message($msg);
 	}
 
 	/**
