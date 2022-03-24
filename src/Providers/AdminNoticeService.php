@@ -2,12 +2,13 @@
 
 namespace Atiqsu\WpPave\Providers;
 
+use Atiqsu\WpPave\Util\HtmlNoticePrinter;
+
 class AdminNoticeService implements NotifyInterface {
 
 	protected string $scriptVersion = '1.0.0';
 	protected string $notice;
 	protected array $notices = [];
-	private string $printing;
 	private bool $isDismissible = true;
 	private static int $count = 0;
 
@@ -17,16 +18,16 @@ class AdminNoticeService implements NotifyInterface {
 
 	private function setUniqueId($val): AdminNoticeService {
 		self::$count++;
-		$this->notice = $uniqueId ?? $this->getUniqueId();
+		$this->notice = $val ?? $this->getUniqueId();
+		$this->notices[$this->notice]['_id'] = $this->notice;
 
 		return $this;
 	}
 
 	public function new($uniqueId = null): AdminNoticeService {
 
-		$this->setUniqueId($uniqueId);
-
-		$this->notices[$this->notice] = [
+		$this->setUniqueId($uniqueId)
+			->notices[$this->notice] = [
 			'm' => 'wp pave default message....no message set by developer',
 			'c' => ['wp-pave-notice notice'],
 			'd' => $this->isDismissible,
@@ -104,18 +105,9 @@ class AdminNoticeService implements NotifyInterface {
 	public function notify() {
 
 		//$screen = get_current_screen();
-
 		foreach($this->notices as $id => $notice) {
-			$this->printing = $id;
-			add_action('admin_notices', [$this, 'printNotice']);
+			add_action('admin_notices', [new HtmlNoticePrinter($notice), 'print']);
+			unset($this->notices[$id]);
 		}
-	}
-
-	public function printNotice() {
-		$cls = $this->notices[$this->printing]['d'] ? 'is-dismissible ' : '';
-		$cls .= implode(' ', $this->notices[$this->printing]['c']);
-		$msg = $this->notices[$this->printing]['m'];
-
-		printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($cls), esc_html($msg));
 	}
 }
