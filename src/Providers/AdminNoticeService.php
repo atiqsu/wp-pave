@@ -25,7 +25,7 @@ class AdminNoticeService implements NotifyInterface {
 
 		$this->setUniqueId($uniqueId);
 
-		$this->notices[$uniqueId] = [
+		$this->notices[$this->notice] = [
 			'm' => 'wp pave default message....no message set by developer',
 			'c' => ['wp-pave-notice notice'],
 			'd' => $this->isDismissible,
@@ -36,35 +36,35 @@ class AdminNoticeService implements NotifyInterface {
 
 	public function errorNotice($msg, $noticeId = null): AdminNoticeService {
 
-		return $this->setUniqueId($noticeId)
+		return $this->new($noticeId)
 		     ->setNoticeType('error')
 		     ->message($msg);
 	}
 
 	public function infoNotice($msg, $noticeId = null): AdminNoticeService {
 
-		return $this->setUniqueId($noticeId)
+		return $this->new($noticeId)
 		->setNoticeType('info')
 		->message($msg);
 	}
 
 	public function successNotice($msg, $noticeId = null): AdminNoticeService {
 
-		return $this->setUniqueId($noticeId)
+		return $this->new($noticeId)
 		     ->setNoticeType('success')
 		     ->message($msg);
 	}
 
 	public function warningNotice($msg, $noticeId = null): AdminNoticeService {
 
-		return $this->setUniqueId($noticeId)
+		return $this->new($noticeId)
 		     ->setNoticeType('warning')
 		     ->message($msg);
 	}
 
 	public function defaultNotice($msg, $noticeId = null): AdminNoticeService {
 
-		return $this->setUniqueId($noticeId)
+		return $this->new($noticeId)
 		     ->setNoticeType('default')
 		     ->message($msg);
 	}
@@ -103,22 +103,11 @@ class AdminNoticeService implements NotifyInterface {
 	public function notify() {
 
 		//$screen = get_current_screen();
-		//
 
 		foreach($this->notices as $id => $notice) {
-
 			$this->printing = $id;
-
 			add_action('admin_notices', [$this, 'printNotice']);
 		}
-
-		add_action('admin_notices', [$this, 'get_notice']);
-
-		add_action('admin_notices', [$this, 'get_notice']);
-
-		add_action('admin_notices', function () {
-			echo '<div class="error"><p>FluentCRM Pro requires to update to the latest version. <a href="' . admin_url('plugins.php?s=fluentcampaign-pro&plugin_status=all') . '">Please update FluentCRM Pro</a>. Otherwise, it will not work properly.</p></div>';
-		});
 	}
 
 	public function printNotice() {
