@@ -2,6 +2,8 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
+use Atiqsu\WpPave\Contracts\HandlerInterface;
+
 abstract class UninstallHandler implements HandlerInterface {
 
 	abstract public function uninstall();

@@ -2,6 +2,8 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
+use Atiqsu\WpPave\Contracts\HandlerInterface;
+
 abstract class DeActivationHandler implements HandlerInterface {
 
 	abstract public function deactivate();

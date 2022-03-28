@@ -2,6 +2,6 @@
 
 namespace Atiqsu\WpPave\Contracts;
 
-interface PageInterface {
-
+interface PageInterface extends HandlerInterface {
+	public function __construct();
 }

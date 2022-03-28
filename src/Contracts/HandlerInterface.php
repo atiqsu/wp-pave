@@ -1,5 +1,5 @@
 <?php
-namespace Atiqsu\WpPave\Handlers;
+namespace Atiqsu\WpPave\Contracts;
 
 interface HandlerInterface {
 
