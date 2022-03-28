@@ -26,8 +26,8 @@ class PageServiceHandler implements PageInterface {
 		$this->registry[$slug] = 'admin|parent';
 		$this->pageList[$slug] = new Admin($slug);
 
-		$this->pageList[$slug]->setPTtl('Parent page - ' . self::$pageCount . ' booted');
-		$this->pageList[$slug]->setMTtl('Parent page - ' . self::$pageCount);
+		$this->pageList[$slug]->pageTitle('Parent page - ' . self::$pageCount . ' booted');
+		$this->pageList[$slug]->menuTitle('Parent page - ' . self::$pageCount);
 
 		return $this->pageList[$slug];
 	}
