@@ -25,6 +25,12 @@ class Application {
 
 	private string $tDom;
 
+	protected string $pluginBaseUrl;
+	protected string $pluginBaseDir;
+	protected string $pluginAppDir;
+	protected string $pluginHooksDir;
+
+
 	/*
 	 * Just to prevent instantiating it
 	 *
@@ -34,6 +40,12 @@ class Application {
 		$this->container = new Container();
 
 		$this->path = $path;
+
+		$this->pluginBaseUrl = trailingslashit(plugin_dir_url($path));
+		$this->pluginBaseDir = trailingslashit(plugin_dir_path($path));
+		$this->pluginAppDir = $this->pluginBaseDir . 'app/';
+		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
+
 
 		//$this->pluginFile     = $path;
 		//$this->basePath       = untrailingslashit(plugin_dir_path($path));
@@ -116,6 +128,23 @@ class Application {
 				$this->getContainer()->set($name, $handler);
 			}
 		}
+
+		$this->includeHookFl('pages', $this->get('adminPageService'));
+		$this->includeHookFl('enqueue', $this->get('enqueueService'));
+		$this->includeHookFl('filters', $this);
+		$this->includeHookFl('actions', $this);
+
+		///Users/atiq/Projects/exp/wp-content/plugins/user-role-capability-editor/app/Hooks/pages.php
+
+	}
+
+	private function includeHookFl($fl, $service) {
+
+		$pageFl = $this->pluginHooksDir.$fl.'.php';
+
+		if(file_exists($pageFl)) {
+			require_once $pageFl;
+		}
 	}
 
 
@@ -126,13 +155,7 @@ class Application {
 	 */
 	public function systemActions() {
 
-		//$page = $this->get('adminPageService');
-		$page = new PageServiceHandler();
-		$page->new('urc_admin/one')
-			->menuTitle('Wow 2')
-			->pageTitle('This is wow ...')
-			->caller(AdminController::class)
-			->register();
+		$page = $this->get('adminPageService');
 
 		add_action( 'admin_menu',  [$page, 'init']);
 
