@@ -129,6 +129,6 @@ class Application {
 
 		add_action( 'admin_menu',  [$page, 'init']);
 
-		echo 'Hello world from framework...............initiated ';
+		//echo 'Hello world from framework...............initiated ';
 	}
 }

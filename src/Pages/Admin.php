@@ -10,7 +10,7 @@ class Admin {
 	private string $slug;
 	private string $pTtl;
 	private string $mTtl;
-	private string $cap;
+	private string $cap = 'manage_options';
 	private string $icon;
 	private string $pos;
 
@@ -18,7 +18,7 @@ class Admin {
 	private string $method = 'index';
 
 	public function __construct($slug, $cap, $controller, $method, $mTtl, $pTtl, $icon, $pos) {
-		$this->cap        = $cap;
+		$this->cap        = empty($cap) ? $this->cap : $cap;
 		$this->slug       = $slug;
 		$this->controller = $controller;
 		$this->method     = $method;
@@ -36,7 +36,7 @@ class Admin {
 		}
 
 		$con = $app->get($this->controller);
-		
+
 		if($con instanceof PageInterface) {
 
 			$pos = $this->pos < 0 ? null : $this->pos;
