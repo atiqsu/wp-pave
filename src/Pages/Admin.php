@@ -18,20 +18,25 @@ class Admin {
 	private string $method = 'index';
 
 	public function __construct($slug, $cap, $controller, $method, $mTtl, $pTtl, $icon, $pos) {
-		$this->cap = $cap;
-		$this->slug = $slug;
+		$this->cap        = $cap;
+		$this->slug       = $slug;
 		$this->controller = $controller;
-		$this->method = $method;
+		$this->method     = $method;
 
 		$this->pTtl = $pTtl;
 		$this->mTtl = $mTtl;
-		$this->pos = $pos;
+		$this->pos  = $pos;
 		$this->icon = $icon;
 	}
 
 	public function boot(Application $app) {
-		$con = $app->get($this->controller);
 
+		if(!$app->has($this->controller)) {
+			$app->getContainer()->register($this->controller);
+		}
+
+		$con = $app->get($this->controller);
+		
 		if($con instanceof PageInterface) {
 
 			$pos = $this->pos < 0 ? null : $this->pos;

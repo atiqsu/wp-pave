@@ -84,6 +84,14 @@ class Application {
 		return $this->container->get($name);
 	}
 
+	public function has($name): bool {
+		return $this->container->has($name);
+	}
+
+	public function getContainer(): Container {
+		return $this->container;
+	}
+
 	/**
 	 *
 	 * @return AdminNoticeService
