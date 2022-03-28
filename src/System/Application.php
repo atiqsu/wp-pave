@@ -4,6 +4,8 @@ namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
 use Atiqsu\WpPave\Handlers\EnqueueHandler;
+use Atiqsu\WpPave\Http\Page;
+use Atiqsu\WpPave\Pages\AdminController;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**
@@ -96,11 +98,29 @@ class Application {
 
 		//$this->container->register(EnqueueHandler::class);
 		$this->container->register('enqueueService', EnqueueHandler::class);
+		$this->container->register('adminPageService', Page::class);
+
 
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
 	}
 
+	/**
+	 * @return void
+	 * @throws \Atiqsu\WpPave\Container\ContainerExceptionInterface
+	 * @throws \Atiqsu\WpPave\Container\NotFoundExceptionInterface
+	 */
 	public function systemActions() {
 
+		//$page = $this->get('adminPageService');
+		$page = new Page();
+		$page->new('urc_admin/one')
+			->menuTitle('Wow 1')
+			->pageTitle('This is wow ...')
+			->caller(AdminController::class)
+			->register();
+
+		add_action( 'admin_menu',  [$page, 'init']);
+
+		echo 'Hello world from framework...............initiated ';
 	}
 }
