@@ -9,17 +9,16 @@ use Atiqsu\WpPave\System\Application;
 class Page {
 
 	private array $pageList;
-	private string $slug;
+	private ?string $slug;
 	private string $pTtl;
 	private string $mTtl;
-	private string $cap;
-	private string $icon;
-	private string $pos;
+	private string $cap = '';
+	private string $icon = '';
+	private ?string $controller;
+	private string $method = 'index';
+	private int $pos = -9;
 
 	private static int $pageCount = 0;
-
-	private string $controller;
-	private string $method = 'index';
 
 	protected array $registry = [];
 
@@ -34,10 +33,11 @@ class Page {
 		}
 
 		$this->registry[$slug] = 'admin|parent';
+		$this->slug = $slug;
 		self::$pageCount++;
 
-		$this->pTtl = 'Parent page - '. self::$pageCount. ' booted';
-		$this->mTtl = 'Parent page - '. self::$pageCount;
+		$this->pTtl = 'Parent page - ' . self::$pageCount . ' booted';
+		$this->mTtl = 'Parent page - ' . self::$pageCount;
 
 		return $this;
 	}
@@ -93,9 +93,9 @@ class Page {
 			$this->pos
 		);
 
-		$this->slug = null;
+		$this->slug       = null;
 		$this->controller = null;
-		$this->method = 'index';
+		$this->method     = 'index';
 	}
 
 	public function init() {

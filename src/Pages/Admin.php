@@ -33,7 +33,10 @@ class Admin {
 		$con = $app->get($this->controller);
 
 		if($con instanceof PageInterface) {
-			add_menu_page($this->pTtl, $this->mTtl, $this->cap, $this->slug, [$con, $this->method], $this->icon, $this->pos);
+
+			$pos = $this->pos < 0 ? null : $this->pos;
+
+			add_menu_page($this->pTtl, $this->mTtl, $this->cap, $this->slug, [$con, $this->method], $this->icon, $pos);
 		}
 	}
 }
