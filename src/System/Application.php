@@ -22,6 +22,8 @@ class Application {
 
 	protected string $path;
 
+	private string $tDom;
+
 	/*
 	 * Just to prevent instantiating it
 	 *
@@ -50,6 +52,12 @@ class Application {
 
 	public function setPluginVersion(string $version): Application {
 		$this->version = $version;
+
+		return $this;
+	}
+
+	public function setTextDomain($dom): Application {
+		$this->tDom = $dom;
 
 		return $this;
 	}
@@ -88,5 +96,11 @@ class Application {
 
 		//$this->container->register(EnqueueHandler::class);
 		$this->container->register('enqueueService', EnqueueHandler::class);
+
+		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
+	}
+
+	public function systemActions() {
+
 	}
 }
