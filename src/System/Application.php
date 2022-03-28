@@ -3,6 +3,7 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
+use Atiqsu\WpPave\Handlers\EnqueueHandler;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**
@@ -81,5 +82,11 @@ class Application {
 	 */
 	public function getAdminNoticeService(): AdminNoticeService {
 		return $this->container->get(AdminNoticeService::class);
+	}
+
+	public function init() {
+
+		//$this->container->register(EnqueueHandler::class);
+		$this->container->register('enqueueService', EnqueueHandler::class);
 	}
 }

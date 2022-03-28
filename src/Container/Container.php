@@ -51,7 +51,7 @@ class Container implements ContainerInterface {
 			$this->singletons[$key] = true;
 		}
 
-		if ($val instanceof \Closure) {
+		if($val instanceof \Closure) {
 			throw new DependencyResolutionException('For the time being we are not allowing closure.');
 		}
 
@@ -63,7 +63,7 @@ class Container implements ContainerInterface {
 			'object',
 		];
 
-		$typ = gettype($val);
+		$typ                  = gettype($val);
 		$this->registry[$key] = $singleton;
 
 		if(in_array($typ, $primitive)) {
@@ -73,10 +73,17 @@ class Container implements ContainerInterface {
 		}
 
 		if(class_exists($val)) {
-			$this->debug[] = 'class found: '. $val;
+			$this->debug[] = 'class found: ' . $val;
 			$this->buildObject($key, $val);
 		} else {
-			$this->debug[] = 'class not found: '. $val;
+			$this->debug[] = 'class not found: ' . $val;
+		}
+	}
+
+	public function register(string $name, $val = null) {
+		if(!$this->has($name)) {
+			$val = is_null($val) ? $name : $val;
+			$this->set($name, $val);
 		}
 	}
 
