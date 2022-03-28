@@ -3,8 +3,7 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
-use Atiqsu\WpPave\Handlers\EnqueueHandler;
-use Atiqsu\WpPave\Http\Page;
+use Atiqsu\WpPave\Handlers\PageServiceHandler;
 use Atiqsu\WpPave\Pages\AdminController;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
@@ -40,7 +39,7 @@ class Application {
 		//$this->basePath       = untrailingslashit(plugin_dir_path($path));
 		//$this->pluginBasename = plugin_basename($path);
 
-		$this->bootFrameworkProviders();
+		$this->bootFrameworkMuProviders();
 	}
 
 	public static function getInstance($path = null): Application {
@@ -64,7 +63,7 @@ class Application {
 		return $this;
 	}
 
-	private function bootFrameworkProviders() {
+	private function bootFrameworkMuProviders() {
 		$conf = require_once __DIR__ . '/systemConf.php';
 
 		if(!empty($conf['before_boot_providers'])) {
@@ -104,13 +103,21 @@ class Application {
 
 	public function init() {
 
-		//$this->container->register(EnqueueHandler::class);
-		$this->container->register('enqueueService', EnqueueHandler::class);
-		$this->container->register('adminPageService', Page::class);
-
+		$this->bootFrameworkProviders();
 
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
 	}
+
+	private function bootFrameworkProviders() {
+		$conf = require_once __DIR__ . '/serviceConf.php';
+
+		if(!empty($conf['services'])) {
+			foreach($conf['services'] as $name => $handler) {
+				$this->getContainer()->set($name, $handler);
+			}
+		}
+	}
+
 
 	/**
 	 * @return void
@@ -120,9 +127,9 @@ class Application {
 	public function systemActions() {
 
 		//$page = $this->get('adminPageService');
-		$page = new Page();
+		$page = new PageServiceHandler();
 		$page->new('urc_admin/one')
-			->menuTitle('Wow 1')
+			->menuTitle('Wow 2')
 			->pageTitle('This is wow ...')
 			->caller(AdminController::class)
 			->register();
