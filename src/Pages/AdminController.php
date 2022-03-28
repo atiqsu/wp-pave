@@ -2,7 +2,7 @@
 
 namespace Atiqsu\WpPave\Pages;
 
-class AdminController extends Controller {
+final class AdminController extends Controller {
 
 	public function index() {
 		echo '<pre>';
