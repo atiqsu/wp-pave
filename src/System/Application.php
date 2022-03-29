@@ -3,8 +3,6 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
-use Atiqsu\WpPave\Handlers\PageServiceHandler;
-use Atiqsu\WpPave\Pages\AdminController;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**

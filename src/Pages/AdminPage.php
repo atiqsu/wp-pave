@@ -5,17 +5,17 @@ namespace Atiqsu\WpPave\Pages;
 use Atiqsu\WpPave\Contracts\PageInterface;
 use Atiqsu\WpPave\System\Application;
 
-class Admin {
+class AdminPage {
 
-	private string $slug;
-	private string $pTtl;
-	private string $mTtl;
-	private string $cap = 'manage_options';
-	private string $icon;
-	private int $pos;
+	protected string $slug;
+	protected string $pTtl;
+	protected string $mTtl;
+	protected string $cap = 'manage_options';
+	protected string $icon;
+	protected int $pos;
 
-	private string $controller;
-	private string $method = 'index';
+	protected string $controller;
+	protected string $method = 'index';
 
 	public function __construct($slug, $cap = '', $controller = '', $method = '', $mTtl = '', $pTtl = '', $icon = '', $pos = -9) {
 		$this->cap        = empty($cap) ? $this->cap : $cap;
@@ -50,38 +50,38 @@ class Admin {
 		}
 	}
 
-	public function caller(string $controller, string $method = 'index'): Admin {
+	public function caller(string $controller, string $method = 'index'): AdminPage {
 		$this->method     = $method;
 		$this->controller = $controller;
 
 		return $this;
 	}
 
-	public function pageTitle(string $pTtl): Admin {
+	public function pageTitle(string $pTtl): AdminPage {
 		$this->pTtl = $pTtl;
 
 		return $this;
 	}
 
-	public function menuTitle(string $mTtl): Admin {
+	public function menuTitle(string $mTtl): AdminPage {
 		$this->mTtl = $mTtl;
 
 		return $this;
 	}
 
-	public function setCap($cap): Admin {
+	public function setCap($cap): AdminPage {
 		$this->cap = $cap;
 
 		return $this;
 	}
 
-	public function setIcon(string $icon): Admin {
+	public function setIcon(string $icon): AdminPage {
 		$this->icon = $icon;
 
 		return $this;
 	}
 
-	public function setPos(string $pos): Admin {
+	public function setPos(string $pos): AdminPage {
 		$this->pos = (int)$pos;
 
 		return $this;

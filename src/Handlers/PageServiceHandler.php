@@ -3,7 +3,7 @@
 namespace Atiqsu\WpPave\Handlers;
 
 use Atiqsu\WpPave\Contracts\PageInterface;
-use Atiqsu\WpPave\Pages\Admin;
+use Atiqsu\WpPave\Pages\AdminPage;
 use Atiqsu\WpPave\System\Application;
 
 class PageServiceHandler implements PageInterface {
@@ -17,7 +17,15 @@ class PageServiceHandler implements PageInterface {
 		$this->registry = [];
 	}
 
-	public function new($slug): Admin {
+	public function parent($parentSlug) {
+
+	}
+
+	public function sub() {
+
+	}
+
+	public function new($slug): AdminPage {
 
 		if(isset($this->registry[$slug])) {
 			return $this->registry[$slug];
@@ -26,7 +34,7 @@ class PageServiceHandler implements PageInterface {
 		self::$pageCount++;
 
 		$this->registry[$slug] = 'admin|parent';
-		$this->pageList[$slug] = new Admin($slug);
+		$this->pageList[$slug] = new AdminPage($slug);
 
 		$this->pageList[$slug]->pageTitle('Parent page - ' . self::$pageCount . ' booted');
 		$this->pageList[$slug]->menuTitle('Parent page - ' . self::$pageCount);
