@@ -3,6 +3,7 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
+use Atiqsu\WpPave\Handlers\PageServiceHandler;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**
@@ -109,6 +110,16 @@ class Application {
 	 */
 	public function getAdminNoticeService(): AdminNoticeService {
 		return $this->container->get(AdminNoticeService::class);
+	}
+
+	/**
+	 * Shortcut methods
+	 * @return PageServiceHandler
+	 * @throws \Atiqsu\WpPave\Container\ContainerExceptionInterface
+	 * @throws \Atiqsu\WpPave\Container\NotFoundExceptionInterface
+	 */
+	public function getPageService(): PageServiceHandler {
+		return $this->container->get(PageServiceHandler::class);
 	}
 
 	public function init() {

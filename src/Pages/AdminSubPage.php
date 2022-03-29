@@ -36,29 +36,24 @@ class AdminSubPage extends AdminPage {
 
 	public function boot(Application $app) {
 
-		$con = $this->resolve($app, $this->controller);
-		$pos = $this->pos < 0 ? null : $this->pos;
+		if(!empty($this->controller)) {
 
-		if($con instanceof PageInterface) {
-			add_submenu_page(
-				$this->parentSlug,
-				$this->pTtl,
-				$this->mTtl,
-				$this->cap,
-				$this->slug,
-				[$con, $this->method],
-				$pos
-			);
-		} else {
-			add_submenu_page(
-				$this->parentSlug,
-				$this->pTtl,
-				$this->mTtl,
-				$this->cap,
-				$this->slug,
-				'',
-				$pos
-			);
+			$pos = $this->pos < 0 ? null : $this->pos;
+			$con = $this->resolve($app, $this->controller);
+
+			if($con instanceof Controller) {
+				add_submenu_page(
+					$this->parentSlug,
+					$this->pTtl,
+					$this->mTtl,
+					$this->cap,
+					$this->slug,
+					[$con, $this->method],
+					$pos
+				);
+			} else {
+				die($this->controller);
+			}
 		}
 	}
 }
