@@ -46,18 +46,17 @@ class PageServiceHandler implements PageInterface {
 		}
 
 		if(isset($this->registry['child'][$this->parent][$slug])) {
-			return $this->registry['child'][$this->parent][$slug];
+			return $this->subPgList[$this->parent][$slug];
 		}
 
-		$sub = new AdminSubPage($this->parent, $slug);
+		$this->registry['child'][$this->parent][$slug] = 'admin|child';
 
-		$this->registry['child'][$this->parent][$slug] = $sub;
+		$sub = new AdminSubPage($this->parent, $slug);
 
 		$sub->pageTitle('Sub page - ' . self::$pageCount . ' booted');
 		$sub->menuTitle('Sub page - ' . self::$pageCount);
 
-		$this->registry['parent'][$slug] = 'admin|child';
-		$this->subPgList[$slug] = $sub;
+		$this->subPgList[$this->parent][$slug] = $sub;
 
 		return $sub;
 	}
@@ -65,7 +64,7 @@ class PageServiceHandler implements PageInterface {
 	public function new($slug): AdminPage {
 
 		if(isset($this->registry['parent'][$slug])) {
-			return $this->registry['parent'][$slug];
+			return $this->pageList[$slug];
 		}
 
 		self::$pageCount++;
