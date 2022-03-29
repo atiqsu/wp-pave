@@ -12,24 +12,18 @@ class AdminPage {
 	protected string $mTtl;
 	protected string $cap = 'manage_options';
 	protected string $icon;
-	protected int $pos;
+	protected int $pos = -9;
 
 	protected string $controller;
 	protected string $method = 'index';
 
-	public function __construct($slug, $cap = '', $controller = '', $method = '', $mTtl = '', $pTtl = '', $icon = '', $pos = -9) {
+	public function __construct($slug, $cap = '') {
 		$this->cap        = empty($cap) ? $this->cap : $cap;
 		$this->slug       = $slug;
-		$this->controller = $controller;
-		$this->method     = $method;
-
-		$this->pTtl = $pTtl;
-		$this->mTtl = $mTtl;
-		$this->pos  = $pos;
-		$this->icon = $icon;
 	}
 
 	public function register(): bool {
+		//$this->slug = null;
 
 		return true;
 	}
@@ -46,7 +40,15 @@ class AdminPage {
 
 			$pos = $this->pos < 0 ? null : $this->pos;
 
-			add_menu_page($this->pTtl, $this->mTtl, $this->cap, $this->slug, [$con, $this->method], $this->icon, $pos);
+			add_menu_page(
+				$this->pTtl,
+				$this->mTtl,
+				$this->cap,
+				$this->slug,
+				[$con, $this->method],
+				$this->icon,
+				$pos
+			);
 		}
 	}
 
@@ -81,10 +83,50 @@ class AdminPage {
 		return $this;
 	}
 
+	/**
+	 * todo - learning tips, default values of menu position
+	 * 2 – Dashboard
+	 * 4 – Separator
+	 * 5 – Posts
+	 * 10 – Media
+	 * 15 – Links
+	 * 20 – Pages
+	 * 25 – Comments
+	 * 59 – Separator
+	 * 60 – Appearance
+	 * 65 – Plugins
+	 * 70 – Users
+	 * 75 – Tools
+	 * 80 – Settings
+	 * 99 – Separator
+	 *
+	 * For the Network Admin menu, the values are different:
+	 * 2 – Dashboard
+	 * 4 – Separator
+	 * 5 – Sites
+	 * 10 – Users
+	 * 15 – Themes
+	 * 20 – Plugins
+	 * 25 – Settings
+	 * 30 – Updates
+	 * 99 – Separator
+	 *
+	 * @param string $pos
+	 * @return $this
+	 */
 	public function setPos(string $pos): AdminPage {
 		$this->pos = (int)$pos;
 
 		return $this;
+	}
+
+	protected function resolve(Application $app) {
+
+		if(!$app->has($this->controller)) {
+			$app->getContainer()->register($this->controller);
+		}
+
+		return $app->get($this->controller);
 	}
 }
 
