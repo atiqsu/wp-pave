@@ -41,9 +41,9 @@ class Application {
 
 		$this->path = $path;
 
-		$this->pluginBaseUrl = trailingslashit(plugin_dir_url($path));
-		$this->pluginBaseDir = trailingslashit(plugin_dir_path($path));
-		$this->pluginAppDir = $this->pluginBaseDir . 'app/';
+		$this->pluginBaseUrl  = trailingslashit(plugin_dir_url($path));
+		$this->pluginBaseDir  = trailingslashit(plugin_dir_path($path));
+		$this->pluginAppDir   = $this->pluginBaseDir . 'app/';
 		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
 
 
@@ -129,18 +129,36 @@ class Application {
 			}
 		}
 
-		$this->includeHookFl('pages', $this->get('adminPageService'));
-		$this->includeHookFl('enqueue', $this->get('enqueueService'));
-		$this->includeHookFl('filters', $this);
-		$this->includeHookFl('actions', $this);
+		$hooks = apply_filters('', [
+			'pages',
+			'enqueue',
+			'filters',
+			'actions',
+		], $this);
 
-		///Users/atiq/Projects/exp/wp-content/plugins/user-role-capability-editor/app/Hooks/pages.php
-
+		foreach($hooks as $hook) {
+			$this->includeHookFl($hook);
+		}
 	}
 
-	private function includeHookFl($fl, $service) {
+	private function includeHookFl($fl) {
 
-		$pageFl = $this->pluginHooksDir.$fl.'.php';
+		$app = $this;
+
+		switch($fl) {
+			case 'pages':
+				$page = $this->get('adminPageService');
+				break;
+			case 'enqueue':
+				$enqueue = $this->get('enqueueService');
+				break;
+			case 'filters':
+				$filters = $this->get('enqueueService');;
+			case 'actions':
+				$actions = $this->get('enqueueService');
+		}
+
+		$pageFl = $this->pluginHooksDir . $fl . '.php';
 
 		if(file_exists($pageFl)) {
 			require_once $pageFl;
@@ -157,7 +175,7 @@ class Application {
 
 		$page = $this->get('adminPageService');
 
-		add_action( 'admin_menu',  [$page, 'init']);
+		add_action('admin_menu', [$page, 'init']);
 
 		//echo 'Hello world from framework...............initiated ';
 	}

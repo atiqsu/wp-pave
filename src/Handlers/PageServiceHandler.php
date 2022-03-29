@@ -12,7 +12,6 @@ class PageServiceHandler implements PageInterface {
 	private array $registry;
 	private static int $pageCount = 0;
 
-
 	public function __construct() {
 		$this->pageList = [];
 		$this->registry = [];
