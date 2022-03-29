@@ -2,7 +2,6 @@
 
 namespace Atiqsu\WpPave\Pages;
 
-use Atiqsu\WpPave\Contracts\PageInterface;
 use Atiqsu\WpPave\System\Application;
 
 class AdminPage {
@@ -20,25 +19,50 @@ class AdminPage {
 	public function __construct($slug, $cap = '') {
 		$this->cap        = empty($cap) ? $this->cap : $cap;
 		$this->slug       = $slug;
+		$this->controller = '';
 	}
 
 	public function register(): bool {
-		//$this->slug = null;
 
 		return true;
 	}
 
 	public function boot(Application $app) {
 
-		if(!$app->has($this->controller)) {
-			$app->getContainer()->register($this->controller);
+		$pos = $this->pos < 0 ? null : $this->pos;
+
+		if(empty($this->controller)) {
+			add_menu_page(
+				$this->pTtl,
+				$this->mTtl,
+				$this->cap,
+				$this->slug,
+				'',
+				$this->icon,
+				$pos
+			);
+
+			return;
 		}
 
-		$con = $app->get($this->controller);
+		if($this->controller instanceof \Closure) {
 
-		if($con instanceof PageInterface) {
+			add_menu_page(
+				$this->pTtl,
+				$this->mTtl,
+				$this->cap,
+				$this->slug,
+				$this->controller,
+				$this->icon,
+				$pos
+			);
 
-			$pos = $this->pos < 0 ? null : $this->pos;
+			return;
+		}
+
+		$con = $this->resolve($app, $this->controller);
+
+		if($con instanceof Controller) {
 
 			add_menu_page(
 				$this->pTtl,

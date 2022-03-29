@@ -90,8 +90,8 @@ class PageServiceHandler implements PageInterface {
 		foreach($this->pageList as $pg => $obj) {
 			$obj->boot($app);
 
-			if($this->has($pg)) {
-				foreach($this->subPgList as $sId => $subObj) {
+			if($this->has($pg) && !empty($this->subPgList[$pg])) {
+				foreach($this->subPgList[$pg] as $sId => $subObj) {
 					$subObj->boot($app);
 				}
 			}
