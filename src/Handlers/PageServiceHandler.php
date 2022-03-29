@@ -9,11 +9,14 @@ use Atiqsu\WpPave\System\Application;
 class PageServiceHandler implements PageInterface {
 
 	private array $pageList;
+	private array $registry;
 	private static int $pageCount = 0;
 
-	protected array $registry = [];
 
-	public function __construct() { }
+	public function __construct() {
+		$this->pageList = [];
+		$this->registry = [];
+	}
 
 	public function new($slug): Admin {
 
