@@ -30,12 +30,13 @@ class AdminSubPage extends AdminPage {
 		 *
 		 */
 		$this->parentSlug = $parentSlug;
+		$this->controller = '';
 	}
 
 
 	public function boot(Application $app) {
 
-		$con = $this->resolve($app);
+		$con = $this->resolve($app, $this->controller);
 		$pos = $this->pos < 0 ? null : $this->pos;
 
 		if($con instanceof PageInterface) {

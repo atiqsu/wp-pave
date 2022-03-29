@@ -11,7 +11,7 @@ class AdminPage {
 	protected string $pTtl;
 	protected string $mTtl;
 	protected string $cap = 'manage_options';
-	protected string $icon;
+	protected string $icon = '';
 	protected int $pos = -9;
 
 	protected string $controller;
@@ -120,13 +120,13 @@ class AdminPage {
 		return $this;
 	}
 
-	protected function resolve(Application $app) {
+	protected function resolve(Application $app, $name) {
 
-		if(!$app->has($this->controller)) {
-			$app->getContainer()->register($this->controller);
+		if(!$app->has($name)) {
+			$app->getContainer()->register($name);
 		}
 
-		return $app->get($this->controller);
+		return $app->get($name);
 	}
 }
 
