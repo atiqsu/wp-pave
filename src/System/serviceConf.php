@@ -9,6 +9,8 @@ return [
 
 	'services' => [
 		'enqueueService' => \Atiqsu\WpPave\Handlers\EnqueueHandler::class,
+		'scriptHandler' => \Atiqsu\WpPave\Handlers\ScriptHandler::class,
+		'styleHandler' => \Atiqsu\WpPave\Handlers\StyleHandler::class,
 		'adminPageService' => \Atiqsu\WpPave\Handlers\PageServiceHandler::class,
 	],
 ];

@@ -3,6 +3,7 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
+use Atiqsu\WpPave\Handlers\EnqueueHandler;
 use Atiqsu\WpPave\Handlers\PageServiceHandler;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
@@ -28,6 +29,8 @@ class Application {
 	protected string $pluginBaseDir;
 	protected string $pluginAppDir;
 	protected string $pluginHooksDir;
+	protected string $pluginAssetDir;
+	protected string $pluginAssetUrl;
 
 
 	/*
@@ -44,6 +47,8 @@ class Application {
 		$this->pluginBaseDir  = trailingslashit(plugin_dir_path($path));
 		$this->pluginAppDir   = $this->pluginBaseDir . 'app/';
 		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
+		$this->pluginAssetDir = $this->pluginBaseDir . 'app/assets/';
+		$this->pluginAssetUrl = $this->pluginBaseUrl . 'app/assets/';
 
 
 		//$this->pluginFile     = $path;
@@ -60,6 +65,31 @@ class Application {
 		}
 
 		return self::$instance;
+	}
+
+	public function getBaseUrl(): string {
+		return $this->pluginBaseUrl;
+	}
+
+	public function getCssDir(): string {
+		return $this->pluginAssetDir . 'css/';
+	}
+
+	public function getCssUrl(): string {
+		return $this->pluginAssetUrl . 'css/';
+	}
+
+	public function getJsDir(): string {
+		return $this->pluginAssetDir . 'js/';
+	}
+
+	public function getJsUrl(): string {
+		return $this->pluginAssetUrl . 'js/';
+	}
+
+	public function getVersion(): string {
+
+		return $this->version ?? '1.1.' . time();
 	}
 
 	public function setPluginVersion(string $version): Application {
@@ -114,6 +144,7 @@ class Application {
 
 	/**
 	 * Shortcut methods
+	 *
 	 * @return PageServiceHandler
 	 * @throws \Atiqsu\WpPave\Container\ContainerExceptionInterface
 	 * @throws \Atiqsu\WpPave\Container\NotFoundExceptionInterface
@@ -125,6 +156,22 @@ class Application {
 	public function init() {
 
 		$this->bootFrameworkProviders();
+
+		$service = new EnqueueHandler();
+
+		$service->newScript('urc-admin-main')
+		        ->file('admin.js')
+		        ->call();
+		$service->newScript('urc-front-main')
+		        ->file('front.js')
+		        ->localize([
+			                   'meao'  => 'cat',
+			                   'nonce' => 'the nonce',
+		                   ])
+		        ->call();
+
+
+		$service->init($this);
 
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
 	}
@@ -143,7 +190,7 @@ class Application {
 			'enqueue',
 			'filters',
 			'actions',
-		], $this);
+		],                     $this);
 
 		foreach($hooks as $hook) {
 			$this->includeHookFl($hook);
