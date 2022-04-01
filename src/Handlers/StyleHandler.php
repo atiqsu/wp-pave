@@ -17,7 +17,7 @@ use Atiqsu\WpPave\Contracts\EnqueueInterface;
  * wp_enqueue_block_style( string $block_name, array $args )
  * wp_enqueue_media( array $args = array() )
  * wp_enqueue_editor()
-
+ *
  * @author - pavenest solutions
  * @email - pavenest@gmail.com
  * @created - 31/3/22 - 11:30 AM
@@ -53,5 +53,10 @@ class StyleHandler implements EnqueueInterface {
 		return $this->handle;
 	}
 
+	public function setHandle(string $handle): StyleHandler {
+		$this->handle = $handle;
+
+		return $this;
+	}
 
 }

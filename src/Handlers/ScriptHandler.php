@@ -56,12 +56,6 @@ class ScriptHandler implements EnqueueInterface {
 	private bool $hasLocal = false;
 	private array $local;
 
-	/**
-	 * @param string $handle
-	 */
-	public function __construct(string $handle) {
-		$this->handle = $handle;
-	}
 
 	/**
 	 * getHandle is a getter for the $handle variable.
@@ -80,6 +74,11 @@ class ScriptHandler implements EnqueueInterface {
 		return $this->handle;
 	}
 
+	public function setHandle(string $handle): ScriptHandler {
+		$this->handle = $handle;
+
+		return $this;
+	}
 
 	/**
 	 * setDeps is responsible for doing some .

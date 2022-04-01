@@ -24,14 +24,16 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 
 	public function newScript(string $uniqueHandle) : ScriptHandler {
 
-		$this->object = new ScriptHandler($uniqueHandle);
+		$this->object = new ScriptHandler();
+		$this->object->setHandle($uniqueHandle);
 
 		return $this->object;
 	}
 
 	public function newStyle(string $uniqueHandle) : StyleHandler {
 
-		$this->object = new StyleHandler($uniqueHandle);
+		$this->object = new StyleHandler();
+		$this->object->setHandle($uniqueHandle);
 
 		return $this->object;
 	}
