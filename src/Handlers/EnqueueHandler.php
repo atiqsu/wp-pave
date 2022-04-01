@@ -26,6 +26,7 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 
 		$this->object = new ScriptHandler();
 		$this->object->setHandle($uniqueHandle);
+		$this->scriptList[$uniqueHandle] = $this->object;
 
 		return $this->object;
 	}
@@ -34,6 +35,7 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 
 		$this->object = new StyleHandler();
 		$this->object->setHandle($uniqueHandle);
+		$this->styleList[$uniqueHandle] = $this->object;
 
 		return $this->object;
 	}
