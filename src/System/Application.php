@@ -164,10 +164,13 @@ class Application {
 		        ->call();
 		$service->newScript('urc-front-main')
 		        ->file('front.js')
-		        ->localize([
-			                   'meao'  => 'cat',
-			                   'nonce' => 'the nonce',
-		                   ])
+		        ->localize(
+			        'urcFrontObj',
+			        [
+				        'meao'  => 'cat',
+				        'nonce' => 'the nonce',
+			        ]
+		        )
 		        ->call();
 
 
