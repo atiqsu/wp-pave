@@ -157,25 +157,6 @@ class Application {
 
 		$this->bootFrameworkProviders();
 
-		$service = new EnqueueHandler();
-
-		$service->newScript('urc-admin-main')
-		        ->file('admin.js')
-		        ->call();
-		$service->newScript('urc-front-main')
-		        ->file('front.js')
-		        ->localize(
-			        'urcFrontObj',
-			        [
-				        'meao'  => 'cat',
-				        'nonce' => 'the nonce',
-			        ]
-		        )
-		        ->call();
-
-
-		$service->init($this);
-
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
 	}
 
@@ -233,9 +214,10 @@ class Application {
 	public function systemActions() {
 
 		$page = $this->get('adminPageService');
+		$enqueue = $this->get('enqueueService');
 
 		add_action('admin_menu', [$page, 'init']);
 
-		//echo 'Hello world from framework...............initiated ';
+		$enqueue->init($this);
 	}
 }
