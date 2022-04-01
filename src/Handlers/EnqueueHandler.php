@@ -14,13 +14,8 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 
 	private array $scriptList = [];
 	private array $styleList = [];
-	private array $scripts = [];
-	private array $registered = [];
-
 	private string $version;
 	private ?EnqueueInterface $object;
-	private ?ScriptHandler $script;
-	private ?StyleHandler $style;
 
 	public function newScript(string $uniqueHandle) : ScriptHandler {
 
@@ -65,57 +60,6 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 		}
 	}
 
-
-
-	/**
-	 * initScript is responsible for doing some .
-	 *
-	 * @return bool
-	 * @cache - TWQuIEF0aXF1ciBSYWhtYW4!
-	 * @author - pavenest solutions
-	 * @email - pavenest@gmail.com
-	 * @created - 29/3/22 - 6:07 PM
-	 *
-	 * @praam - cGF2ZW5lc3RAZ21haWwuY29t
-	 * @rel - YXRpcXVyLnN1QGdtYWlsLmNvbQ!#
-	 *
-	 */
-
-
-
-	public function on(string $name = 'admin'): EnqueueHandler {
-
-		return $this;
-	}
-
-	public function style($path, $options = []) {
-		// TODO: Implement style() method.
-	}
-
-	public function inlineStyle($data, $handle = '') {
-		// TODO: Implement inlineStyle() method.
-	}
-
-	public function script(string $handle) {
-		// TODO: Implement script() method.
-	}
-
-	public function headerScript($path, $options = []) {
-		// TODO: Implement headerScript() method.
-	}
-
-	public function footerScript($path, $options = []) {
-		// TODO: Implement footerScript() method.
-	}
-
-	public function localizeScript($handle, $objectName, $data) {
-		// TODO: Implement localizeScript() method.
-	}
-
-	public function inlineScript($data, $option = []) {
-		// TODO: Implement inlineScript() method.
-	}
-
 	/**
 	 * newInstance is responsible for doing some .
 	 *
@@ -136,6 +80,18 @@ class EnqueueHandler implements \Atiqsu\WpPave\Contracts\EnqueueHandlerInterface
 		 */
 
 		return new static();
+	}
+
+	public function inlineStyle($data, $handle = '') {
+		// TODO: Implement inlineStyle() method.
+	}
+
+	public function localizeScript($handle, $objectName, $data) {
+		// TODO: Implement localizeScript() method.
+	}
+
+	public function inlineScript($data, $option = []) {
+		// TODO: Implement inlineScript() method.
 	}
 }
 

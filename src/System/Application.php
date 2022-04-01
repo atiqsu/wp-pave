@@ -3,7 +3,6 @@
 namespace Atiqsu\WpPave\System;
 
 use Atiqsu\WpPave\Container\Container;
-use Atiqsu\WpPave\Handlers\EnqueueHandler;
 use Atiqsu\WpPave\Handlers\PageServiceHandler;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
@@ -14,8 +13,6 @@ use Atiqsu\WpPave\Providers\AdminNoticeService;
 class Application {
 
 	private static ?Application $instance = null;
-
-	private array $providersInstance = [];
 
 	protected Container $container;
 
@@ -215,6 +212,9 @@ class Application {
 
 		$page = $this->get('adminPageService');
 		$enqueue = $this->get('enqueueService');
+
+		//$action = $this->get('actionService');
+		//$filter = $this->get('filterService');
 
 		add_action('admin_menu', [$page, 'init']);
 
