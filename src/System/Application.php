@@ -2,8 +2,12 @@
 
 namespace Atiqsu\WpPave\System;
 
+use Atiqsu\WpPave\Config\Config;
 use Atiqsu\WpPave\Container\Container;
 use Atiqsu\WpPave\Handlers\PageServiceHandler;
+use Atiqsu\WpPave\Handlers\RouterHandler;
+use Atiqsu\WpPave\Http\Api;
+use Atiqsu\WpPave\Policy\PublicPolicy;
 use Atiqsu\WpPave\Providers\AdminNoticeService;
 
 /**
@@ -152,6 +156,8 @@ class Application {
 
 	public function init() {
 
+		$this->getContainer()->register(Config::class);
+
 		$this->bootFrameworkProviders();
 
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
@@ -162,7 +168,7 @@ class Application {
 
 		if(!empty($conf['services'])) {
 			foreach($conf['services'] as $name => $handler) {
-				$this->getContainer()->set($name, $handler);
+				$this->getContainer()->register($name, $handler);
 			}
 		}
 
@@ -175,6 +181,19 @@ class Application {
 
 		foreach($hooks as $hook) {
 			$this->includeHookFl($hook);
+		}
+
+		//Load project specific settings
+
+		$envFl = $this->pluginAppDir . 'config.php';
+
+		if(file_exists($envFl)) {
+			$env = require $envFl;
+			if(!empty($env)) {
+				foreach($env as $ky => $vl) {
+					Config::set($ky, $vl);
+				}
+			}
 		}
 	}
 
@@ -219,5 +238,39 @@ class Application {
 		add_action('admin_menu', [$page, 'init']);
 
 		$enqueue->init($this);
+
+		//$router = $this->get('routerService');
+		$router = new RouterHandler();
+
+		$router->withPolicy(PublicPolicy::class)->group('the_prefix', function($route){
+
+			$route->get();
+
+
+
+		});
+
+
+
+		Api::group(['middleware' => 'test'], function () {
+			Api::get('test/{id}', ApiController::class);
+		});
+
+		/**
+		 *
+		 */
+		$router->prefix('public')->withPolicy('PublicPolicy')->group(function ($router) {
+
+			$router->any('bounce_handler/{service_name}/handle/{security_code}', 'WebhookBounceController@handleBounce')
+			       ->alphaNumDash('service_name')
+			       ->alphaNumDash('security_code');
+
+			$router->any('bounce_handler/{service_name}/{security_code}', 'WebhookBounceController@handleBounce')
+			       ->alphaNumDash('service_name')
+			       ->alphaNumDash('security_code');
+
+		});
+
+
 	}
 }
