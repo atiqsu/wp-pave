@@ -11,6 +11,7 @@ return [
 		'enqueueService' => \Atiqsu\WpPave\Handlers\EnqueueHandler::class,
 		'filterService' => \Atiqsu\WpPave\Handlers\FilterHandler::class,
 		'actionService' => \Atiqsu\WpPave\Handlers\FilterHandler::class,
+		'routerService' => \Atiqsu\WpPave\Handlers\RouterHandler::class,
 		'scriptHandler' => \Atiqsu\WpPave\Handlers\ScriptHandler::class,
 		'styleHandler' => \Atiqsu\WpPave\Handlers\StyleHandler::class,
 		'adminPageService' => \Atiqsu\WpPave\Handlers\PageServiceHandler::class,

@@ -88,6 +88,30 @@ class Container implements ContainerInterface {
 	}
 
 	/**
+	 * resolve is responsible for doing some .
+	 *
+	 * @param string $name
+	 * @praam - cGF2ZW5lc3RAZ21haWwuY29t
+	 * @rel - YXRpcXVyLnN1QGdtYWlsLmNvbQ!#
+	 *
+	 * @return mixed
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 * @cache - TWQuIEF0aXF1ciBSYWhtYW4!
+	 * @author - pavenest solutions
+	 * @email - pavenest@gmail.com
+	 * @created - 6/4/22 - 2:39 PM
+	 *
+	 */
+	public function resolve(string $name) {
+		if(!$this->has($name)) {
+			$this->register($name);
+		}
+
+		return $this->get($name);
+	}
+
+	/**
 	 * In this function we are hoping to get full qualified class name in string format
 	 *
 	 * @param string $key
