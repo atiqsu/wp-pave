@@ -63,4 +63,22 @@ class RouterHandler implements RoutingInterface {
 		return $r;
 	}
 
+	public function run() {
+		$debug = true;
+
+		if($debug) {
+			foreach($this->routes as $route) {
+				$debug[] = $route->register(true);
+			}
+
+			echo '<pre>';
+			print_r($debug);
+			echo '</pre>';
+			die('ohhh nooooo...');
+		}
+
+		foreach($this->routes as $route) {
+			$route->register();
+		}
+	}
 }

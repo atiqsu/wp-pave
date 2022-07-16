@@ -179,6 +179,7 @@ class Application {
 
 		$this->bootFrameworkProviders();
 
+		add_action('rest_api_init', [$this, 'register_rest_routes']);
 		add_action($this->tDom . '/on/framework/initiated', [$this, 'systemActions']);
 	}
 
@@ -307,5 +308,11 @@ class Application {
 		 *
 		 * //*/
 
+	}
+
+	public function register_rest_routes() {
+		//$router = new RouterHandler();
+		$router = $this->get('routerService');
+		$router->run();
 	}
 }
