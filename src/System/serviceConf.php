@@ -8,6 +8,7 @@ return [
 	 */
 
 	'services' => [
+		'configService' => \Atiqsu\WpPave\Config\Config::class,
 		'enqueueService' => \Atiqsu\WpPave\Handlers\EnqueueHandler::class,
 		'filterService' => \Atiqsu\WpPave\Handlers\FilterHandler::class,
 		'actionService' => \Atiqsu\WpPave\Handlers\FilterHandler::class,

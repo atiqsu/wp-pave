@@ -12,6 +12,7 @@ class Container implements ContainerInterface {
 	protected array $instance = [];
 
 	protected array $registry = [];
+	protected array $alias = [];
 
 	protected array $singletons = [];
 
@@ -85,6 +86,11 @@ class Container implements ContainerInterface {
 			$val = is_null($val) ? $name : $val;
 			$this->set($name, $val);
 		}
+	}
+
+	public function setAlias(string $name, $alias) {
+		$id = $this->makeKey($name);
+		$this->alias[$alias] = $id;
 	}
 
 	/**
