@@ -24,6 +24,10 @@ class Config implements ConfigInterface {
 		$this->bucket[$key] = $val;
 	}
 
+	public function getVal($key, $def = null) {
+		return $this->has($key) ? $this->bucket[$key] : $def;
+	}
+
 	/**
 	 * has is responsible for doing some .
 	 *

@@ -32,6 +32,7 @@ class Application {
 	protected string $pluginHooksDir;
 	protected string $pluginAssetDir;
 	protected string $pluginAssetUrl;
+	protected string $pluginRoutes;
 
 
 	/*
@@ -50,6 +51,7 @@ class Application {
 		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
 		$this->pluginAssetDir = $this->pluginBaseDir . 'app/assets/';
 		$this->pluginAssetUrl = $this->pluginBaseUrl . 'app/assets/';
+		$this->pluginRoutes   = $this->pluginBaseUrl . 'app/Routes/';
 
 
 		//$this->pluginFile     = $path;
@@ -173,12 +175,13 @@ class Application {
 		}
 
 		$hooks = apply_filters(
-			'thethethe',
+			'wp-pave/initialService',
 			[
 				'pages',
 				'enqueue',
 				'filters',
 				'actions',
+				'routes.api',
 			],
 			$this
 		);
@@ -207,7 +210,9 @@ class Application {
 
 	private function includeHookFl($fl) {
 
-		$app = $this;
+		$app       = $this;
+		$parentDir = $this->pluginHooksDir;
+		$ext       = '.php';
 
 		switch($fl) {
 			case 'pages':
@@ -217,12 +222,19 @@ class Application {
 				$enqueue = $this->get('enqueueService');
 				break;
 			case 'filters':
-				$filters = $this->get('enqueueService');;
+				$filters = $this->get('filterService');
+				break;
 			case 'actions':
-				$actions = $this->get('enqueueService');
+				$actions = $this->get('actionService');
+				break;
+			case 'routes.api':
+				$router    = $this->get('routerService');
+				$parentDir = $this->pluginRoutes;
+				$fl        = 'api';
+				break;
 		}
 
-		$pageFl = $this->pluginHooksDir . $fl . '.php';
+		$pageFl = $parentDir . $fl . $ext;
 
 		if(file_exists($pageFl)) {
 			require_once $pageFl;
@@ -247,15 +259,9 @@ class Application {
 
 		$enqueue->init($this);
 
+		//$router = new RouterHandler();
 		//$router = $this->get('routerService');
-		$router = new RouterHandler();
 
-		$router->withPolicy(PublicPolicy::class)->group('the_prefix', function ($route) {
-			$route->get('')->controller()->alphanum('')->numeric();
-			$route->get('')->controller()->alphanum('')->numeric();
-			//$router->get('/categories', 'ProductsInfo@getCategories');
-
-		});
 
 		// policy handler as permission callback in register routes
 		//

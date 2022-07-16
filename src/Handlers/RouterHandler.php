@@ -10,15 +10,25 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
+use Atiqsu\WpPave\Config\Config;
 use Atiqsu\WpPave\Contracts\RoutingInterface;
 use Atiqsu\WpPave\Http\Route;
 use Atiqsu\WpPave\System\Application;
 
 class RouterHandler implements RoutingInterface {
 
+	private string $restNm = '';
 	private string $thePolicy = '';
 	private string $groupPrefix = '';
 	private array $routes = [];
+	private Config $conf;
+
+
+	public function __construct() {
+		$this->conf   = Application::getInstance()->get(Config::class);
+		$this->restNm = trim($this->conf->get('restNamespace'), '/') .
+			'/' . $this->conf->get('apiVersion');
+	}
 
 	public function group($prefix, \Closure $callback) {
 
@@ -37,7 +47,7 @@ class RouterHandler implements RoutingInterface {
 	}
 
 	protected function newRoute($uri, $handler, $method): Route {
-		$r = new Route($uri, $handler, $method);
+		$r = new Route($uri, $handler, $method, $this->restNm);
 		$r->setPrefix($this->groupPrefix);
 		$r->setPolicy($this->thePolicy);
 

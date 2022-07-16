@@ -13,7 +13,7 @@ namespace Atiqsu\WpPave\Policy;
 
 class PublicPolicy extends BasePolicy {
 
-	public function verify(\WP_REST_Request $request): bool {
+	public function verify(\WP_REST_Request $request, $urlParams = []): bool {
 
 		return true;
 	}

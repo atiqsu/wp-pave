@@ -12,6 +12,6 @@ namespace Atiqsu\WpPave\Contracts;
 
 interface MiddlewareInterface {
 
-	public function verify(\WP_REST_Request $request) : bool;
+	public function verify(\WP_REST_Request $request, $urlParams = []) : bool;
 
 }
