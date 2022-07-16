@@ -138,7 +138,12 @@ class Route {
 		$this->compileOpt();
 
 		if($debug === true) {
-			return [$this->uri.'::'. $this->handlerCls.'->'. $this->handlerMethod.'('.$this->options['methods'].')', $this->policy];
+			return [
+				$this->uri.'::'. $this->handlerCls.'->'. $this->handlerMethod.'('.$this->options['methods'].')',
+				$this->policy,
+				get_rest_url(),
+				'wp-json/'.$this->namespace.'/'.$this->uri
+			];
 		}
 
 		return register_rest_route($this->namespace, $this->uri, $this->options);

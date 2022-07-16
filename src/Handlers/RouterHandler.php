@@ -67,6 +67,7 @@ class RouterHandler implements RoutingInterface {
 		$debug = true;
 
 		if($debug) {
+			$debug = [];
 			foreach($this->routes as $route) {
 				$debug[] = $route->register(true);
 			}
