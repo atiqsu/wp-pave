@@ -23,7 +23,12 @@ class Container implements ContainerInterface {
 	}
 
 	public function get(string $id) {
-		$key = $this->makeKey($id);
+
+		if(isset($this->alias[$id])) {
+			$key = $this->alias[$id];
+		} else {
+			$key = $this->makeKey($id);
+		}
 
 		if(isset($this->instance[$key])) {
 			return $this->instance[$key];
@@ -89,7 +94,7 @@ class Container implements ContainerInterface {
 	}
 
 	public function setAlias(string $name, $alias) {
-		$id = $this->makeKey($name);
+		$id                  = $this->makeKey($name);
 		$this->alias[$alias] = $id;
 	}
 
@@ -109,9 +114,12 @@ class Container implements ContainerInterface {
 	 * @created - 6/4/22 - 2:39 PM
 	 *
 	 */
-	public function resolve(string $name) {
+	public function resolve(string $name, $alias = '') {
 		if(!$this->has($name)) {
 			$this->register($name);
+			if(!empty($alias)) {
+				$this->setAlias($name, $alias);
+			}
 		}
 
 		return $this->get($name);

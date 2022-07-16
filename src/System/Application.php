@@ -125,7 +125,7 @@ class Application {
 		if(file_exists($confFl)) {
 			$conf = require_once $confFl;
 			if(!empty($conf)) {
-				$config = $this->get('configService');
+				$config = $this->container->resolve(Config::class, 'configService');
 				foreach($conf as $key => $val) {
 					$config->setVal($key, $val);
 				}
