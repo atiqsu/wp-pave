@@ -18,6 +18,7 @@ use Atiqsu\WpPave\System\Application;
 class RouterHandler implements RoutingInterface {
 
 	private string $restNm = '';
+	private string $controllerNm = '';
 	private string $thePolicy = '';
 	private string $groupPrefix = '';
 	private array $routes = [];
@@ -28,6 +29,7 @@ class RouterHandler implements RoutingInterface {
 		$this->conf   = Application::getInstance()->get(Config::class);
 		$this->restNm = trim($this->conf->get('restNamespace'), '/') .
 			'/' . $this->conf->get('apiVersion');
+		$this->controllerNm = trim($this->conf->getVal('pluginNamespace'), '/');
 	}
 
 	public function group($prefix, \Closure $callback) {
@@ -47,7 +49,7 @@ class RouterHandler implements RoutingInterface {
 	}
 
 	protected function newRoute($uri, $handler, $method): Route {
-		$r = new Route($uri, $handler, $method, $this->restNm);
+		$r = new Route($uri, $handler, $method, $this->restNm, $this->controllerNm);
 		$r->setPrefix($this->groupPrefix);
 		$r->setPolicy($this->thePolicy);
 

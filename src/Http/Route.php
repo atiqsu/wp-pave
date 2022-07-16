@@ -18,12 +18,12 @@ class Route {
 
 	//$uri, $handler, $method, $this->restNm
 
-	public function __construct($uri, $handler, $method, $namespace) {
+	public function __construct($uri, $handler, $method, $namespace, $nms) {
 
 		$tmp = trim($handler);
 		$tmp = explode('@', $tmp);
 
-		$this->handlerCls    = $tmp[0];
+		$this->handlerCls    = ltrim($nms.$tmp[0]);
 		$this->handlerMethod = $tmp[1];
 
 		$this->uri        = '/' . trim($uri, '/');
