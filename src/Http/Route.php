@@ -138,7 +138,7 @@ class Route {
 		$this->compileOpt();
 
 		if($debug === true) {
-			return [$this->uri, $this->handlerCls, $this->handlerMethod, $this->options];
+			return [$this->uri.'::'. $this->handlerCls.'->'. $this->handlerMethod.'('.$this->options['methods'].')', $this->policy];
 		}
 
 		return register_rest_route($this->namespace, $this->uri, $this->options);
