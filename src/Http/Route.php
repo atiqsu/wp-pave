@@ -141,8 +141,7 @@ class Route {
 			return [
 				$this->uri.'::'. $this->handlerCls.'->'. $this->handlerMethod.'('.$this->options['methods'].')',
 				$this->policy,
-				get_rest_url(),
-				'wp-json/'.$this->namespace.'/'.$this->uri
+				site_url().'/wp-json/'.$this->namespace.$this->uri,
 			];
 		}
 

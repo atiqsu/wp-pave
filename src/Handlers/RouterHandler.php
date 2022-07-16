@@ -64,7 +64,7 @@ class RouterHandler implements RoutingInterface {
 	}
 
 	public function run() {
-		$debug = true;
+		$debug = $this->conf->getVal('debug');
 
 		if($debug) {
 			$debug = [];
