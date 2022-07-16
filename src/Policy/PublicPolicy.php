@@ -17,6 +17,4 @@ class PublicPolicy extends BasePolicy {
 
 		return true;
 	}
-
-
 }

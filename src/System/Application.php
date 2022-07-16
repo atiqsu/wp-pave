@@ -172,12 +172,16 @@ class Application {
 			}
 		}
 
-		$hooks = apply_filters('', [
-			'pages',
-			'enqueue',
-			'filters',
-			'actions',
-		],                     $this);
+		$hooks = apply_filters(
+			'thethethe',
+			[
+				'pages',
+				'enqueue',
+				'filters',
+				'actions',
+			],
+			$this
+		);
 
 		foreach($hooks as $hook) {
 			$this->includeHookFl($hook);
@@ -185,11 +189,22 @@ class Application {
 
 		//Load project specific settings
 
+		/**
+		 * todo - we need more work on config
+		 */
 		$envFl = $this->pluginAppDir . 'config.php';
 
 		if(file_exists($envFl)) {
 			$env = require $envFl;
 			if(!empty($env)) {
+
+				$conf = $this->get(Config::class);
+
+				echo '<pre>';
+				print_r($conf);
+				echo '</pre>';
+				die('ohhh nooooo...');
+
 				foreach($env as $ky => $vl) {
 					Config::set($ky, $vl);
 				}
@@ -229,7 +244,7 @@ class Application {
 	 */
 	public function systemActions() {
 
-		$page = $this->get('adminPageService');
+		$page    = $this->get('adminPageService');
 		$enqueue = $this->get('enqueueService');
 
 		//$action = $this->get('actionService');
@@ -242,35 +257,39 @@ class Application {
 		//$router = $this->get('routerService');
 		$router = new RouterHandler();
 
-		$router->withPolicy(PublicPolicy::class)->group('the_prefix', function($route){
-
-			$route->get();
-
-
+		$router->withPolicy(PublicPolicy::class)->group('the_prefix', function ($route) {
+			$route->get('')->controller()->alphanum('')->numeric();
+			$route->get('')->controller()->alphanum('')->numeric();
+			//$router->get('/categories', 'ProductsInfo@getCategories');
 
 		});
 
+		// policy handler as permission callback in register routes
+		//
 
 
-		Api::group(['middleware' => 'test'], function () {
-			Api::get('test/{id}', ApiController::class);
-		});
-
+		/*
+				Api::group(['middleware' => 'test'], function () {
+					Api::get('test/{id}', ApiController::class);
+				});
+		*/
 		/**
 		 *
-		 */
-		$router->prefix('public')->withPolicy('PublicPolicy')->group(function ($router) {
-
-			$router->any('bounce_handler/{service_name}/handle/{security_code}', 'WebhookBounceController@handleBounce')
-			       ->alphaNumDash('service_name')
-			       ->alphaNumDash('security_code');
-
-			$router->any('bounce_handler/{service_name}/{security_code}', 'WebhookBounceController@handleBounce')
-			       ->alphaNumDash('service_name')
-			       ->alphaNumDash('security_code');
-
-		});
-
+		 *
+		 * $router->prefix('public')->withPolicy('PublicPolicy')->group(function ($router) {
+		 *
+		 * $router->any('bounce_handler/{service_name}/handle/{security_code}', 'WebhookBounceController@handleBounce')
+		 * ->alphaNumDash('service_name')
+		 * ->alphaNumDash('security_code');
+		 *
+		 * $router->any('bounce_handler/{service_name}/{security_code}', 'WebhookBounceController@handleBounce')
+		 * ->alphaNumDash('service_name')
+		 * ->alphaNumDash('security_code');
+		 *
+		 * });
+		 *
+		 *
+		 * //*/
 
 	}
 }

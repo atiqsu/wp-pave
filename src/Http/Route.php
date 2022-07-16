@@ -4,16 +4,19 @@ namespace Atiqsu\WpPave\Http;
 
 class Route {
 
-	private string $namespace;
+	private string $namespace = '';
+	private string $prefix = '';
+	private string $policy = '';
+	private string $method = 'GET';
 
-	public function get($route, $handler) {
-
-		//	public function get('test/{id}') {
-	}
-
-	public function post() {
+	public function setPrefix() {
 
 	}
+
+	public function setPolicy() {
+
+	}
+
 
 	/**
 	 * register is responsible for doing some .
@@ -43,10 +46,10 @@ class Route {
 
 		return register_rest_route($this->namespace, "/{$uri}", $this->options);
 
-		register_rest_route('app/v1', '/phone/verify', array('methods' => 'POST', 'callback' => array($this, 'sendVerifyCode'), 'args' => array('phone' => array('validate_callback' => array($this, 'validatePhone')))));
-		register_rest_route('app/v1', '/login/phone', array('methods' => 'POST', 'callback' => array($this, 'processLogin'), 'args' => array('phone' => array('validate_callback' => array($this, 'validatePhone')))));
-		register_rest_route('app/v1', '/resetpass/phone', array('methods' => 'POST', 'callback' => array($this, 'processResetPassword'), 'args' => array('phone' => array('validate_callback' => array($this, 'validatePhone')))));
-		register_rest_route('app/v1', '/register/phone', array('methods' => 'POST', 'callback' => array($this, 'processRegister'), 'args' => array('phone' => array('validate_callback' => array($this, 'validatePhone')))));
+		register_rest_route('app/v1', '/phone/verify', ['methods' => 'POST', 'callback' => [$this, 'sendVerifyCode'], 'args' => ['phone' => ['validate_callback' => [$this, 'validatePhone']]]]);
+		register_rest_route('app/v1', '/login/phone', ['methods' => 'POST', 'callback' => [$this, 'processLogin'], 'args' => ['phone' => ['validate_callback' => [$this, 'validatePhone']]]]);
+		register_rest_route('app/v1', '/resetpass/phone', ['methods' => 'POST', 'callback' => [$this, 'processResetPassword'], 'args' => ['phone' => ['validate_callback' => [$this, 'validatePhone']]]]);
+		register_rest_route('app/v1', '/register/phone', ['methods' => 'POST', 'callback' => [$this, 'processRegister'], 'args' => ['phone' => ['validate_callback' => [$this, 'validatePhone']]]]);
 
 
 		// You can get the combined, merged set of parameters:
@@ -61,5 +64,6 @@ class Route {
 		$parameters = $request->get_file_params();
 
 	}
+
 
 }

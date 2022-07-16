@@ -10,21 +10,47 @@
 
 namespace Atiqsu\WpPave\Handlers;
 
-use Atiqsu\WpPave\Contracts\HandlerInterface;
 use Atiqsu\WpPave\Contracts\RoutingInterface;
+use Atiqsu\WpPave\Http\Route;
+use Atiqsu\WpPave\System\Application;
 
 class RouterHandler implements RoutingInterface {
 
+	private string $thePolicy = '';
+	private string $groupPrefix = '';
+	private array $routes = [];
 
-	private array $groupStack = [];
+	public function group($prefix, \Closure $callback) {
 
-	public function group($prefix) {
+		$this->groupPrefix = $prefix;
 
-		$this->groupStack[] = $prefix;
+		call_user_func($callback, $this);
+
+		$this->groupPrefix = '';
 	}
 
-	public function withPolicy($name, $method = null): RouterHandler {
+	public function withPolicy($handler): RouterHandler {
+
+		$this->thePolicy = $handler;
 
 		return $this;
 	}
+
+	protected function newRoute($uri, $handler, $method): Route {
+		$r = new Route($uri, $handler, $method);
+		$r->setPrefix($this->groupPrefix);
+		$r->setPolicy($this->thePolicy);
+
+		return $r;
+	}
+
+	public function get(string $uri, string $handler): Route {
+
+		$r = $this->newRoute($uri, $handler, 'GET');
+
+		$this->routes[] = $r;
+
+		return $r;
+	}
+
 }
