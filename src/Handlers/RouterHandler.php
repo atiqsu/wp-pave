@@ -29,7 +29,7 @@ class RouterHandler implements RoutingInterface {
 		$this->conf   = Application::getInstance()->get(Config::class);
 		$this->restNm = trim($this->conf->get('restNamespace'), '/') .
 			'/' . $this->conf->get('apiVersion');
-		$this->controllerNm = trim($this->conf->getVal('pluginNamespace'), '/');
+		$this->controllerNm = trim($this->conf->getVal('pluginNamespace', ''), '/');
 	}
 
 	public function group($prefix, \Closure $callback) {

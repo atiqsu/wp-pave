@@ -23,6 +23,10 @@ class Route {
 		$tmp = trim($handler);
 		$tmp = explode('@', $tmp);
 
+		if(!empty($nms)) {
+			$nms = $nms.'\App\Controllers\\';
+		}
+
 		$this->handlerCls    = ltrim($nms.$tmp[0]);
 		$this->handlerMethod = $tmp[1];
 
