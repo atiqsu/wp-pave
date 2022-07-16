@@ -197,16 +197,9 @@ class Application {
 		if(file_exists($envFl)) {
 			$env = require $envFl;
 			if(!empty($env)) {
-
 				$conf = $this->get(Config::class);
-
-				echo '<pre>';
-				print_r($conf);
-				echo '</pre>';
-				die('ohhh nooooo...');
-
 				foreach($env as $ky => $vl) {
-					Config::set($ky, $vl);
+					$conf->setVal($ky, $vl);
 				}
 			}
 		}

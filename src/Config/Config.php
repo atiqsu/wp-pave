@@ -20,6 +20,10 @@ class Config implements ConfigInterface {
 		return true;
 	}
 
+	public function setVal($key, $val) {
+		$this->bucket[$key] = $val;
+	}
+
 	/**
 	 * has is responsible for doing some .
 	 *
