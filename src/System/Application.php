@@ -32,7 +32,7 @@ class Application {
 	protected string $pluginHooksDir;
 	protected string $pluginAssetDir;
 	protected string $pluginAssetUrl;
-	protected string $pluginRoutes;
+	protected string $pluginRoutesDir;
 
 
 	/*
@@ -49,9 +49,9 @@ class Application {
 		$this->pluginBaseDir  = trailingslashit(plugin_dir_path($path));
 		$this->pluginAppDir   = $this->pluginBaseDir . 'app/';
 		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
+		$this->pluginRoutesDir = $this->pluginBaseDir . 'app/Routes/';
 		$this->pluginAssetDir = $this->pluginBaseDir . 'app/assets/';
 		$this->pluginAssetUrl = $this->pluginBaseUrl . 'app/assets/';
-		$this->pluginRoutes   = $this->pluginBaseUrl . 'app/Routes/';
 
 
 		//$this->pluginFile     = $path;
@@ -229,7 +229,7 @@ class Application {
 				break;
 			case 'routes.api':
 				$router    = $this->get('routerService');
-				$parentDir = $this->pluginRoutes;
+				$parentDir = $this->pluginRoutesDir;
 				$fl        = 'api';
 				break;
 		}
