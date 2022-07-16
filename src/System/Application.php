@@ -45,13 +45,13 @@ class Application {
 
 		$this->path = $path;
 
-		$this->pluginBaseUrl  = trailingslashit(plugin_dir_url($path));
-		$this->pluginBaseDir  = trailingslashit(plugin_dir_path($path));
-		$this->pluginAppDir   = $this->pluginBaseDir . 'app/';
-		$this->pluginHooksDir = $this->pluginBaseDir . 'app/Hooks/';
+		$this->pluginBaseUrl   = trailingslashit(plugin_dir_url($path));
+		$this->pluginBaseDir   = trailingslashit(plugin_dir_path($path));
+		$this->pluginAppDir    = $this->pluginBaseDir . 'app/';
+		$this->pluginHooksDir  = $this->pluginBaseDir . 'app/Hooks/';
 		$this->pluginRoutesDir = $this->pluginBaseDir . 'app/Routes/';
-		$this->pluginAssetDir = $this->pluginBaseDir . 'app/assets/';
-		$this->pluginAssetUrl = $this->pluginBaseUrl . 'app/assets/';
+		$this->pluginAssetDir  = $this->pluginBaseDir . 'app/assets/';
+		$this->pluginAssetUrl  = $this->pluginBaseUrl . 'app/assets/';
 
 
 		//$this->pluginFile     = $path;
@@ -59,6 +59,7 @@ class Application {
 		//$this->pluginBasename = plugin_basename($path);
 
 		$this->bootFrameworkMuProviders();
+		$this->loadPluginConfig();
 	}
 
 	public static function getInstance($path = null): Application {
@@ -116,6 +117,22 @@ class Application {
 			}
 		}
 	}
+
+	private function loadPluginConfig($ext = '.php') {
+
+		$confFl = $this->pluginAppDir . '/config' . $ext;
+
+		if(file_exists($confFl)) {
+			$conf = require_once $confFl;
+			if(!empty($conf)) {
+				$config = $this->get(Config::class);
+				foreach($conf as $key => $val) {
+					$config->setVal($key, $val);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * @param $name
