@@ -42,6 +42,9 @@ class AdminSubPage extends AdminPage {
 			$con = $this->resolve($app, $this->controller);
 
 			if($con instanceof Controller) {
+
+				$con->setPageSlug($this->slug)->setParentPageSlug($this->parentSlug);
+
 				add_submenu_page(
 					$this->parentSlug,
 					$this->pTtl,

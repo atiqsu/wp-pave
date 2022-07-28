@@ -64,6 +64,8 @@ class AdminPage {
 
 		if($con instanceof Controller) {
 
+			$con->setPageSlug($this->slug);
+
 			add_menu_page(
 				$this->pTtl,
 				$this->mTtl,
